@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -7,11 +7,13 @@ namespace ChatBot.Services
 {
     public class TimeAtApi
     {
+        private const string TIMEAPI = "TIME_API";
+
         private string URL { get; }
 
         public TimeAtApi()
         {
-            this.URL = "";
+            this.URL = ConfigurationManager.AppSettings[TIMEAPI];
         }
 
         public void GetTimeBy(string timezone)
