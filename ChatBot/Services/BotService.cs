@@ -36,7 +36,7 @@ namespace ChatBot.Services
         {
             var api = new TimeAtApi();
 
-            api.GetTimeBy(timezone);
+            var time = api.GetTimeBy(timezone);
 
             return "time at";
         }
