@@ -1,0 +1,1 @@
+﻿CREATE TABLE requests(user_id int, zone_id int); 

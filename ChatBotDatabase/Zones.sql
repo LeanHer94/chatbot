@@ -1,0 +1,1 @@
+﻿CREATE TABLE zones(id int NOT NULL, zone varchar(20), parent varchar(20), available int NOT NULL); 
