@@ -65,24 +65,28 @@ namespace ChatBotServer
 
                     Console.WriteLine(data);
 
-                    //var ex = data.Split(':');
-                    //var metaData = ex[1].Split(' ');
-                    //var usr = metaData[0];
-                    //var ircCommand = metaData[1];
-                    //var chnel = metaData[2];
-                    //var mje = ex[2];
+                    if (data.Contains("PRIVMSG"))
+                    {
+                        //:tepper.freenode.net 005 LxbTimeZoneGuru CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 DEAF=D FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: EXTBAN=$,ajrxz CLIENTVER=3.0 ETRACE KNOCK WHOX :are supported by this server
+                        var ex = data.Split(':');
+                        var metaData = ex[1].Split(' ');
+                        var usr = metaData[0];
+                        var ircCommand = metaData[1];
+                        var chnel = metaData[2];
+                        var mje = ex[2];
 
-                    //var commandInfo = mje.Trim().Split(' ');
+                        var commandInfo = mje.Trim().Split(' ');
 
-                    //var command = commandInfo[0];
-                    //var timezone = commandInfo[1];
+                        var command = commandInfo[0];
+                        var timezone = commandInfo[1];
 
-                    //if (this.commands.TryGetValue(command, out string url))
-                    //{
-                    //    var parameter = new Dictionary<string, string> { { "input", timezone } };
-                    //    var encodedContent = new FormUrlEncodedContent(parameter);
-                    //    HttpResponseMessage response = client.PostAsync(url, encodedContent).Result;
-                    //}
+                        if (this.commands.TryGetValue(command, out string url))
+                        {
+                            var parameter = new Dictionary<string, string> { { "input", timezone } };
+                            var encodedContent = new FormUrlEncodedContent(parameter);
+                            HttpResponseMessage response = client.PostAsync(url, encodedContent).Result;
+                        }
+                    }
                 }
 
                 Thread.Sleep(200);
