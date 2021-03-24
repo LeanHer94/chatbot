@@ -1,16 +1,27 @@
-﻿using System.Web.Http;
-using ChatBot.Models;
+﻿using ChatBot.Models;
 using ChatBot.Services;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace ChatBot.Controllers
 {
     public class TimeAtController : ApiController
     {
-        public string Post(InputDTO input)
+        public ResponseMessageResult Post(InputDTO input)
         {
             var bot = new BotService();
 
-            return bot.TimeAt(input.Input);
+            var content = bot.TimeAt(input?.Timezone);
+
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.Accepted)
+            {
+                RequestMessage = Request,
+                Content = new StringContent(content)
+            };
+
+            return ResponseMessage(httpResponseMessage);
         }
     }
 }

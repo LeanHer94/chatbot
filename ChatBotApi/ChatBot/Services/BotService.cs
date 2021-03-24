@@ -28,17 +28,25 @@ namespace ChatBot.Services
         {
             this.PopulateZones();
 
+            if (timezone == null)
+            {
+                return null;
+            }
+
             if (this.botRepository.IsKnownZone(timezone.GetLastRegion()))
             {
                 this.botRepository.InsertRequest(timezone);
 
                 var validPath = this.botRepository.GetValidRegionPath(timezone);
 
-                var datetime = this.timeAtApi.GetTimeBy(validPath);
+                var result = this.timeAtApi.GetTimeBy(validPath);
 
-                var date = DateTime.Parse(datetime);
+                if (DateTime.TryParse(result, out DateTime date))
+                {
+                    return date.ToString("d MMM yyy HH:mm");
+                }
 
-                return date.ToString("d MMM yyy HH:mm");
+                return result;
             }
 
             return ErrorMessages.UNKNOWN_TIMEZONE;

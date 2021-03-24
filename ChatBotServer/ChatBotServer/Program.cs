@@ -6,7 +6,7 @@
         {
             var server = new Server();
 
-            server.Init();
+            server.Run();
         }
     }
 }

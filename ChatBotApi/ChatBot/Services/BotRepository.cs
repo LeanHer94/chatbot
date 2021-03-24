@@ -20,11 +20,13 @@ namespace ChatBot.Services
 
         public int GetCount(string input)
         {
-            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            if (input != null)
             {
-                var parameters = new { lookup = input.GetLastRegion() };
+                using (IDbConnection db = new SqlConnection(this.ConnectionString))
+                {
+                    var parameters = new { lookup = input.GetLastRegion() };
 
-                return db.ExecuteScalar<int>(@"
+                    return db.ExecuteScalar<int>(@"
                             SELECT count(1) FROM requests h
                             WHERE EXISTS(
                                 SELECT 1 FROM
@@ -36,8 +38,11 @@ namespace ChatBot.Services
                                                           AND z2.available = 0
                                                           AND z2.zone = z1.parent)) as ids
                                 WHERE ids.id = h.zone_id)",
-                            parameters);
+                                parameters);
+                }
             }
+
+            return 0;
         }
 
         public string GetValidRegionPath(string timezone)

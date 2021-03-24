@@ -43,13 +43,13 @@ namespace ChatBot.Services
                 }
 
                 this.botRepository.InsertLog(ErrorMessages.API_ISO_COMPLIANT, null);
+                return ErrorMessages.API_ISO_COMPLIANT;
             } 
             else
             {
                 this.botRepository.InsertLog(ErrorMessages.API_TIMEOUT, null);
+                return ErrorMessages.API_TIMEOUT;
             }
-
-            return null;
         }
 
         public IEnumerable<string> GetAll()

@@ -2,6 +2,6 @@
 {
     public class InputDTO
     {
-        public string Input { get; set; }
+        public string Timezone { get; set; }
     }
 }

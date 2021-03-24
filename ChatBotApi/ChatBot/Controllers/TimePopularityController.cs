@@ -1,15 +1,27 @@
-﻿using ChatBot.Services;
+﻿using ChatBot.Models;
+using ChatBot.Services;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace ChatBot.Controllers
 {
     public class TimePopularityController : ApiController
     {
-        public string Post(string input)
+        public ResponseMessageResult Post(InputDTO input)
         {
             var bot = new BotService();
 
-            return bot.TimePopularity(input);
+            var content = bot.TimePopularity(input?.Timezone);
+
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.Accepted)
+            {
+                RequestMessage = Request,
+                Content = new StringContent(content)
+            };
+
+            return ResponseMessage(httpResponseMessage);
         }
     }
 }
