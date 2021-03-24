@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBot.Models;
+using System;
 using System.Collections.Generic;
 
 namespace ChatBot.Services
@@ -21,20 +22,26 @@ namespace ChatBot.Services
 
         public string Process(string input)
         {
-            //Add exception handlering
-            var data = input.Split(':');
-            var user = data[0];
-            var commandInfo = data[1].Trim().Split(' ');
-
-            var command = commandInfo[0];
-            var parameter = commandInfo[1];
-
-            if (this.commands.TryGetValue(command, out Func<string, string> toExecute))
+            try
             {
-                return toExecute.Invoke(parameter);
-            }
+                var data = input.Split(':');
+                var user = data[0];
+                var commandInfo = data[1].Trim().Split(' ');
 
-            return "Wrong command";
+                var command = commandInfo[0];
+                var parameter = commandInfo[1];
+
+                if (this.commands.TryGetValue(command, out Func<string, string> toExecute))
+                {
+                    return toExecute.Invoke(parameter);
+                }
+
+                return ErrorMessages.WRONG_COMMAND;
+            } 
+            catch (IndexOutOfRangeException ex)
+            {
+                return ErrorMessages.WRONG_INPUT;
+            }
         }
 
         private string TimeAt(string timezone)

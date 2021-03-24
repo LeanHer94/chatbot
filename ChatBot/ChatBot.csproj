@@ -128,6 +128,7 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Models\ErrorMessages.cs" />
     <Compile Include="Models\InputDTO.cs" />
     <Compile Include="Services\BotRepository.cs" />
     <Compile Include="Services\TimeAtApi.cs" />
