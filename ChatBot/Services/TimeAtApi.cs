@@ -81,7 +81,7 @@ namespace ChatBot.Services
         {
             try
             {
-                return DateTime.TryParseExact(datetime, "yyyy-MM-ddTHH:mm:ss.fffzzz", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+                return DateTime.TryParseExact(datetime, "yyyy-MM-ddTHH:mm:ss.ffffffzzz", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
             }
             catch(ArgumentException ex)
             {
