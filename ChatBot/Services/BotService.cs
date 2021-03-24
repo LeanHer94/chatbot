@@ -38,12 +38,14 @@ namespace ChatBot.Services
                     return toExecute.Invoke(parameter);
                 }
 
-                return ErrorMessages.WRONG_COMMAND;
+                this.botRepository.InsertLog(ErrorMessages.WRONG_COMMAND, null);
             } 
             catch (IndexOutOfRangeException ex)
             {
-                return ErrorMessages.WRONG_INPUT;
+                this.botRepository.InsertLog(ErrorMessages.WRONG_INPUT, ex);
             }
+
+            return null;
         }
 
         private string TimeAt(string timezone)

@@ -67,6 +67,16 @@ namespace ChatBot.Services
             }
         }
 
+        public void InsertLog(string description, Exception ex)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                var parameters = new { description, exception = ex?.Message };
+
+                db.Execute(@"INSERT INTO logs (description, exception) VALUES (@description, @exception)", parameters);
+            }
+        }
+
         public void TryInsert(IEnumerable<string> timezones)
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))

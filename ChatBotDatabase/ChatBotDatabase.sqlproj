@@ -60,6 +60,7 @@
   <ItemGroup>
     <Build Include="Zones.sql" />
     <Build Include="Requests.sql" />
+    <Build Include="Logs.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployScript.sql" />
