@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Models\InputDTO.cs" />
+    <Compile Include="Services\BotRepository.cs" />
     <Compile Include="Services\TimeAtApi.cs" />
     <Compile Include="Services\BotService.cs" />
     <Compile Include="Controllers\BotController.cs" />

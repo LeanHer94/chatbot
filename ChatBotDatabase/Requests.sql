@@ -1,1 +1,1 @@
-﻿CREATE TABLE requests(user_id int, zone_id int); 
+﻿CREATE TABLE requests(user_id INT, zone_id INT); 

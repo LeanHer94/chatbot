@@ -5,6 +5,9 @@ namespace ChatBot.Services
 {
     public class BotService
     {
+        private BotRepository botRepository = new BotRepository();
+        private TimeAtApi timeAtApi = new TimeAtApi();
+
         private IDictionary<string, Func<string, string>> commands;
 
         public BotService()
@@ -12,11 +15,11 @@ namespace ChatBot.Services
             this.commands = new Dictionary<string, Func<string, string>>
             {
                 { "!timeat", this.TimeAt },
-                { "!timepopularity", this.TimePopilarity }
+                { "!timepopularity", this.TimePopularity }
             };
         }
 
-        public void Process(string input)
+        public string Process(string input)
         {
             //Add exception handlering
             var data = input.Split(':');
@@ -28,26 +31,44 @@ namespace ChatBot.Services
 
             if (this.commands.TryGetValue(command, out Func<string, string> toExecute))
             {
-                toExecute.Invoke(parameter);
+                return toExecute.Invoke(parameter);
             }
+
+            return "Wrong command";
         }
 
         private string TimeAt(string timezone)
         {
-            var api = new TimeAtApi();
+            this.PopulateZones();
 
-            var time = api.GetTimeBy(timezone);
+            this.botRepository.InsertRequest(timezone);
 
-            return "time at";
+            var time = this.timeAtApi.GetTimeBy(timezone);
+
+            var date = DateTime.Parse((string)time.datetime);
+
+            return date.ToString("d MMM yyy HH:mm");
         }
 
         /// <summary>
         /// Timezone / Preffix
         /// </summary>
         /// <param name="parameter"></param>
-        private string TimePopilarity(string parameter)
+        private string TimePopularity(string parameter)
         {
-            return "time pop";
+            this.PopulateZones();
+
+            return this.botRepository.GetCount(parameter).ToString();
+        }
+
+        private void PopulateZones()
+        {
+            if (!this.botRepository.IsZonesTablePopulated())
+            {
+                var timezones = this.timeAtApi.GetAll();
+
+                this.botRepository.TryInsert(timezones);
+            }
         }
     }
 }

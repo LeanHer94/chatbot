@@ -10,9 +10,7 @@ namespace ChatBot.Controllers
         {
             var bot = new BotService();
 
-            bot.Process(input.Input);
-
-            return "Hello world";
+            return bot.Process(input.Input);
         }
     }
 }

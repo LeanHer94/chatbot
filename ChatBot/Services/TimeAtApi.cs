@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -17,7 +18,7 @@ namespace ChatBot.Services
             this.BASE_URL = ConfigurationManager.AppSettings[TIME_API];
         }
 
-        public object GetTimeBy(string timezone)
+        public dynamic GetTimeBy(string timezone)
         {
             HttpClient client = this.GetHttpClient();
             client.BaseAddress = new Uri(this.BASE_URL);
@@ -33,7 +34,7 @@ namespace ChatBot.Services
             return null;
         }
 
-        public void GetAll()
+        public IEnumerable<string> GetAll()
         {
             HttpClient client = this.GetHttpClient();
 
@@ -42,9 +43,10 @@ namespace ChatBot.Services
 
             if (response.IsSuccessStatusCode)
             {
-                // Parse the response body.
-                var dataObjects = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                return response.Content.ReadAsAsync<IEnumerable<string>>().Result;
             }
+
+            return Enumerable.Empty<string>();
         }
 
         private HttpClient GetHttpClient()

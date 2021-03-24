@@ -1,1 +1,1 @@
-﻿CREATE TABLE zones(id int NOT NULL, zone varchar(20), parent varchar(20), available int NOT NULL); 
+﻿CREATE TABLE zones(id INT NOT NULL IDENTITY(1,1), zone VARCHAR(20) NOT NULL, parent VARCHAR(20) NULL, available INT NOT NULL); 
