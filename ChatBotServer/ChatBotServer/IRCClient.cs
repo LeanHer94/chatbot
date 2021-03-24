@@ -102,7 +102,8 @@ namespace ChatBotServer
 
                 Console.WriteLine(print);
                 this.Write(print);
-            } else if (this.commandsLocal.TryGetValue(command, out Action<string> action))
+            }
+            else if (this.commandsLocal.TryGetValue(command, out Action<string> action))
             {
                 action(ircCommand);
             }
