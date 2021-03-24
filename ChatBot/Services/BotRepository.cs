@@ -40,6 +40,23 @@ namespace ChatBot.Services
             }
         }
 
+        public string GetValidRegionPath(string timezone)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                var parameters = new { lookup = timezone.GetLastRegion() };
+
+                return String.Concat(db.ExecuteScalar<string>(@"
+                            SELECT CONCAT(z3.zone, '/', z2.zone, '/', z1.zone)
+                            FROM [ChatBotDatabase].[dbo].[zones] z1
+                            FULL JOIN [ChatBotDatabase].[dbo].[zones] z2 ON z1.parent = z2.zone
+                            FULL JOIN [ChatBotDatabase].[dbo].[zones] z3 ON z2.parent = z3.zone
+                            WHERE z1.zone = @lookup",
+                            parameters)
+                            .SkipWhile(x => x == '/'));
+            }
+        }
+
         public void InsertRequest(string timezone)
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
@@ -83,7 +100,7 @@ namespace ChatBot.Services
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
             {
-                return db.ExecuteScalar<int>("Select COUNT(1) From zones") > 0;
+                return db.ExecuteScalar<int>("SELECT COUNT(1) FROM zones") > 0;
             }
         }
 
@@ -91,7 +108,7 @@ namespace ChatBot.Services
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
             {
-                return db.ExecuteScalar<int>("Select COUNT(1) From zones where zone = @zone", new { zone = zone }) > 0;
+                return db.ExecuteScalar<int>("SELECT COUNT(1) FROM zones WHERE zone = @zone AND available = 1", new { zone }) > 0;
             }
         }
     }

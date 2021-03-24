@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBot.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ChatBot.Services
             this.BASE_URL = ConfigurationManager.AppSettings[TIME_API];
         }
 
-        public dynamic GetTimeBy(string timezone)
+        public string GetTimeBy(string timezone)
         {
             HttpClient client = this.GetHttpClient();
             client.BaseAddress = new Uri(this.BASE_URL);
@@ -28,7 +29,11 @@ namespace ChatBot.Services
 
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<dynamic>().Result; 
+                var result = response.Content.ReadAsAsync<WebApiResultDTO>().Result;
+
+                // So Datetime.Parse don't use it to convert to local datetime.
+                var offset = 6;
+                return result.datetime.Remove(result.datetime.Length - offset, offset);
             }
 
             return null;

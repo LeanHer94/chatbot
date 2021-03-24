@@ -130,6 +130,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Models\ErrorMessages.cs" />
+    <Compile Include="Models\WebApiResultDTO.cs" />
     <Compile Include="Models\InputDTO.cs" />
     <Compile Include="Services\BotRepository.cs" />
     <Compile Include="Services\TimeAtApi.cs" />

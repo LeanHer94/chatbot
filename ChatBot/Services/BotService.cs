@@ -2,6 +2,7 @@
 using ChatBot.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ChatBot.Services
 {
@@ -53,9 +54,11 @@ namespace ChatBot.Services
             {
                 this.botRepository.InsertRequest(timezone);
 
-                var time = this.timeAtApi.GetTimeBy(timezone);
+                var validPath = this.botRepository.GetValidRegionPath(timezone);
 
-                var date = DateTime.Parse((string)time.datetime);
+                var datetime = this.timeAtApi.GetTimeBy(validPath);
+
+                var date = DateTime.Parse(datetime);
 
                 return date.ToString("d MMM yyy HH:mm");
             }
