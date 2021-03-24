@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot", "ChatBot\ChatBot.
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ChatBotDatabase", "ChatBotDatabase\ChatBotDatabase.sqlproj", "{CCC7E497-7F15-4A8D-B31D-7788CE720FE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBotServer", "ChatBotServer\ChatBotServer.csproj", "{30F46F19-F7EE-4E55-AA41-608B2384A87A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{CCC7E497-7F15-4A8D-B31D-7788CE720FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCC7E497-7F15-4A8D-B31D-7788CE720FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CCC7E497-7F15-4A8D-B31D-7788CE720FE6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{30F46F19-F7EE-4E55-AA41-608B2384A87A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F46F19-F7EE-4E55-AA41-608B2384A87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F46F19-F7EE-4E55-AA41-608B2384A87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F46F19-F7EE-4E55-AA41-608B2384A87A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

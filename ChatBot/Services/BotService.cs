@@ -24,33 +24,7 @@ namespace ChatBot.Services
             this.timeAtApi = new TimeAtApi(this.botRepository);
         }
 
-        public string Process(string input)
-        {
-            try
-            {
-                var data = input.Split(':');
-                var user = data[0];
-                var commandInfo = data[1].Trim().Split(' ');
-
-                var command = commandInfo[0];
-                var parameter = commandInfo[1];
-
-                if (this.commands.TryGetValue(command, out Func<string, string> toExecute))
-                {
-                    return toExecute.Invoke(parameter);
-                }
-
-                this.botRepository.InsertLog(ErrorMessages.WRONG_COMMAND, null);
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                this.botRepository.InsertLog(ErrorMessages.WRONG_INPUT, ex);
-            }
-
-            return null;
-        }
-
-        private string TimeAt(string timezone)
+        public string TimeAt(string timezone)
         {
             this.PopulateZones();
 
@@ -74,7 +48,7 @@ namespace ChatBot.Services
         /// Timezone / Preffix
         /// </summary>
         /// <param name="parameter"></param>
-        private string TimePopularity(string parameter)
+        public string TimePopularity(string parameter)
         {
             this.PopulateZones();
 
