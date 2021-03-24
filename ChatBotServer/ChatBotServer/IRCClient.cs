@@ -43,7 +43,7 @@ namespace ChatBotServer
             this.ircServer = "irc.freenode.net";
             this.port = 6667;
             this.botNick = "LxbTimeZoneGuru";
-            this.channel = "#lxbuniquekdskds"; //https://webchat.freenode.net/
+            this.channel = "#lxbuniquekdskds";
 
             this.client = new TcpClient(this.ircServer, this.port);
 
