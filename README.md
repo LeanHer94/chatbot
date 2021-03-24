@@ -21,8 +21,8 @@
 ### ------ To Talk with the bot ----
 * Open https://webchat.freenode.net/ on your browser
 * Enter your NickName and join the channel configured in IRCClient on ChatBotServer.sln (#lxbuniquekdskds)
-* Send commands to the bot.
 * To know which commands are available send !commands
+* !timepopularity accepts timezones, prefixes and also suffixes (like the Vancouver example)
 
 ### ------ To Test the API -----
 * Open Postman
