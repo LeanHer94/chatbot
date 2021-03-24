@@ -3,7 +3,7 @@ ENVIRONMENT
 Install .NET Framework 4.7.2 Runtime. https://dotnet.microsoft.com/download/dotnet-framework/net472
 Install SQL Server Express (And Management Studio if you want to make your own queries). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 
-STEPS
+STEPS\n
 ------ To Generate SQL Databse Schema -------
 Open ChatBot.sln on your Visual Studio. 
 Right click on ChatBotDatabase project and select Publish.
