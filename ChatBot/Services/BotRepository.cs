@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using ChatBot.ExtensionMethods;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +22,7 @@ namespace ChatBot.Services
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
             {
-                var parameters = new { lookup = input.Split('/').Last() };
+                var parameters = new { lookup = input.GetLastRegion() };
 
                 return db.ExecuteScalar<int>(@"
                             SELECT count(1) FROM requests h
@@ -43,10 +44,9 @@ namespace ChatBot.Services
         {
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
             {
-                var parameters = new { zone = timezone.Split('/').Last() };
+                var parameters = new { zone = timezone.GetLastRegion() };
 
-                db.Execute(@"INSERT INTO requests (user_id,zone_id) SELECT 1, id FROM zones WHERE zone = @zone",
-                   parameters);
+                db.Execute(@"INSERT INTO requests (user_id,zone_id) SELECT 1, id FROM zones WHERE zone = @zone", parameters);
             }
         }
 
@@ -56,7 +56,7 @@ namespace ChatBot.Services
             {
                 foreach (var timezone in timezones)
                 {
-                    var regions = timezone.Split('/');
+                    var regions = timezone.GetRegions();
 
                     var last = regions.Last();
                     string parent = null;
@@ -84,6 +84,14 @@ namespace ChatBot.Services
             using (IDbConnection db = new SqlConnection(this.ConnectionString))
             {
                 return db.ExecuteScalar<int>("Select COUNT(1) From zones") > 0;
+            }
+        }
+
+        public bool IsKnownZone(string zone)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                return db.ExecuteScalar<int>("Select COUNT(1) From zones where zone = @zone", new { zone = zone }) > 0;
             }
         }
     }

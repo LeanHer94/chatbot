@@ -1,4 +1,5 @@
-﻿using ChatBot.Models;
+﻿using ChatBot.ExtensionMethods;
+using ChatBot.Models;
 using System;
 using System.Collections.Generic;
 
@@ -48,13 +49,18 @@ namespace ChatBot.Services
         {
             this.PopulateZones();
 
-            this.botRepository.InsertRequest(timezone);
+            if (this.botRepository.IsKnownZone(timezone.GetLastRegion()))
+            {
+                this.botRepository.InsertRequest(timezone);
 
-            var time = this.timeAtApi.GetTimeBy(timezone);
+                var time = this.timeAtApi.GetTimeBy(timezone);
 
-            var date = DateTime.Parse((string)time.datetime);
+                var date = DateTime.Parse((string)time.datetime);
 
-            return date.ToString("d MMM yyy HH:mm");
+                return date.ToString("d MMM yyy HH:mm");
+            }
+
+            return ErrorMessages.UNKNOWN_TIMEZONE;
         }
 
         /// <summary>
