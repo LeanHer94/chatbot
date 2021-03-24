@@ -2,14 +2,13 @@
 using ChatBot.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace ChatBot.Services
 {
     public class BotService
     {
-        private BotRepository botRepository = new BotRepository();
-        private TimeAtApi timeAtApi = new TimeAtApi();
+        private BotRepository botRepository;
+        private TimeAtApi timeAtApi;
 
         private IDictionary<string, Func<string, string>> commands;
 
@@ -20,6 +19,9 @@ namespace ChatBot.Services
                 { "!timeat", this.TimeAt },
                 { "!timepopularity", this.TimePopularity }
             };
+
+            this.botRepository = new BotRepository();
+            this.timeAtApi = new TimeAtApi(this.botRepository);
         }
 
         public string Process(string input)
@@ -39,7 +41,7 @@ namespace ChatBot.Services
                 }
 
                 this.botRepository.InsertLog(ErrorMessages.WRONG_COMMAND, null);
-            } 
+            }
             catch (IndexOutOfRangeException ex)
             {
                 this.botRepository.InsertLog(ErrorMessages.WRONG_INPUT, ex);

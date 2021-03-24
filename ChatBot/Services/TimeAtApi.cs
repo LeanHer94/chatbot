@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,9 +15,12 @@ namespace ChatBot.Services
 
         private string BASE_URL { get; }
 
-        public TimeAtApi()
+        private BotRepository botRepository;
+
+        public TimeAtApi(BotRepository botRepository)
         {
             this.BASE_URL = ConfigurationManager.AppSettings[TIME_API];
+            this.botRepository = botRepository;
         }
 
         public string GetTimeBy(string timezone)
@@ -31,9 +35,18 @@ namespace ChatBot.Services
             {
                 var result = response.Content.ReadAsAsync<WebApiResultDTO>().Result;
 
-                // So Datetime.Parse don't use it to convert to local datetime.
-                var offset = 6;
-                return result.datetime.Remove(result.datetime.Length - offset, offset);
+                if (this.IsISO8601Compliant(result.datetime))
+                {
+                    // So Datetime.Parse don't use it to convert to local datetime.
+                    var offset = 6;
+                    return result.datetime.Remove(result.datetime.Length - offset, offset);
+                }
+
+                this.botRepository.InsertLog(ErrorMessages.API_ISO_COMPLIANT, null);
+            } 
+            else
+            {
+                this.botRepository.InsertLog(ErrorMessages.API_TIMEOUT, null);
             }
 
             return null;
@@ -63,5 +76,18 @@ namespace ChatBot.Services
 
             return client;
         } 
+
+        private bool IsISO8601Compliant(string datetime)
+        {
+            try
+            {
+                return DateTime.TryParseExact(datetime, "yyyy-MM-ddTHH:mm:ss.fffzzz", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+            }
+            catch(ArgumentException ex)
+            {
+                this.botRepository.InsertLog(ErrorMessages.API_DATETIME_INVALID, ex);
+                return false;
+            }
+        }
     }
 }
