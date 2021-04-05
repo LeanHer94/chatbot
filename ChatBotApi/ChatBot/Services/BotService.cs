@@ -39,14 +39,23 @@ namespace ChatBot.Services
 
                 var validPath = this.botRepository.GetValidRegionPath(timezone);
 
-                var result = this.timeAtApi.GetTimeBy(validPath);
-
-                if (DateTime.TryParse(result, out DateTime date))
+                if (this.botRepository.ShouldUpdateCache(validPath))
                 {
-                    return date.ToString("d MMM yyy HH:mm");
-                }
+                    var result = this.timeAtApi.GetTimeBy(validPath);
 
-                return result;
+                    if (DateTime.TryParse(result, out DateTime date))
+                    {
+                        this.botRepository.CacheTimeZone(validPath, date, DateTime.Now);
+
+                        return date.ToString("d MMM yyy HH:mm");
+                    }
+
+                    return result;
+                } 
+                else
+                {
+                    return this.botRepository.GetCachedTimeZone(validPath).ToString("d MMM yyy HH:mm");
+                }
             }
 
             return ErrorMessages.UNKNOWN_TIMEZONE;

@@ -13,6 +13,8 @@ namespace ChatBot.Services
     {
         private string ConnectionString { get; }
 
+        private const int CACHE_TIME = 1;
+
         public BotRepository()
         {
             this.ConnectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
@@ -79,6 +81,43 @@ namespace ChatBot.Services
                 var parameters = new { description, exception = ex?.Message };
 
                 db.Execute(@"INSERT INTO logs (description, exception) VALUES (@description, @exception)", parameters);
+            }
+        }
+
+        public void CacheTimeZone(string timezone, DateTime timeAtTimezone, DateTime requestTime)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                var parameters = new { timezone, timeAtTimezone, requestTime };
+
+                db.Execute(@"IF NOT EXISTS (SELECT 1 FROM requestsCache WHERE timezone = @timezone)
+                            BEGIN
+                               INSERT INTO requestsCache (timezone, time_at_timezone, time_request) 
+                               VALUES (@timezone, @timeAtTimezone, @requestTime)
+                            END ELSE
+                               UPDATE requestsCache SET time_at_timezone = @timeAtTimezone, time_request = @requestTime
+                               WHERE timezone = @timezone", 
+                               parameters);
+            }
+        }
+
+        public bool ShouldUpdateCache(string timezone)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                var parameters = new { timezone };
+
+                return db.ExecuteScalar<int>("SELECT DATEDIFF(MINUTE, time_request, GETDATE()) from requestsCache WHERE timezone = @timezone", parameters) > CACHE_TIME;
+            }
+        }
+
+        public DateTime GetCachedTimeZone(string timezone)
+        {
+            using (IDbConnection db = new SqlConnection(this.ConnectionString))
+            {
+                var parameters = new { timezone };
+
+                return db.ExecuteScalar<DateTime>("SELECT time_at_timezone from requestsCache WHERE timezone = @timezone", parameters);
             }
         }
 
