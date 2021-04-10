@@ -1,1 +1,4 @@
-﻿CREATE TABLE requests(id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, user_id INT, zone_id INT); 
+﻿CREATE TABLE requests(
+	id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	user_id INT NOT NULL, 
+	zone_id INT NOT NULL CONSTRAINT FK_request_zone REFERENCES zones(id)); 
