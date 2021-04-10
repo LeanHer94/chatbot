@@ -1,1 +1,1 @@
-﻿CREATE TABLE logs (id INT NOT NULL IDENTITY(1,1), description VARCHAR(50) NULL, exception VARCHAR(MAX)); 
+﻿CREATE TABLE logs (id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, description VARCHAR(50) NULL, exception VARCHAR(MAX)); 
